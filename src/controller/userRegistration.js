@@ -19,7 +19,7 @@ export const createUserRegistration = async (req, res) => {
         })
 
         const existUser = await user.findOne({ email })
-        if(!!existUser) return res.status(400).json({
+        if (!!existUser) return res.status(400).json({
             type: "error",
             message: "email already exist."
         })
@@ -29,17 +29,20 @@ export const createUserRegistration = async (req, res) => {
         })
         const userData = await data.save()
         res.status(201).json({
-            type: "Success",
+            type: "success",
             message: "User register successfully",
-            token: await generateNewToken({ 
-                user_id: userData?._id, 
-                email: userData?.email, 
-                username: userData?.username, 
+            token: await generateNewToken({
+                user_id: userData?._id,
+                email: userData?.email,
+                username: userData?.username,
                 contact: userData?.contact
-             })
+            })
         })
 
     } catch (error) {
-        console.log('error', error)
+        return res.status(500).json({
+            type: 'error',
+            message: error.message || 'Something went wrong.',
+        });
     }
 }
