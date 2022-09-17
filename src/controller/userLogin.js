@@ -17,7 +17,7 @@ export const userLogin = async (req, res) => {
             message: "user not found this email address."
         })
 
-        const isAuthenticated = await comparePassword(password, findUser.password)
+        const isAuthenticated = await comparePassword(password, findUser?.password)
 
         if (!isAuthenticated) return res.status(401).json({
             type: "error",

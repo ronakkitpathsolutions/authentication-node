@@ -30,7 +30,7 @@ export const createUserRegistration = async (req, res) => {
         const userData = await data.save()
         res.status(201).json({
             type: "success",
-            message: "User register successfully",
+            message: "User register successfully.",
             token: await generateNewToken({
                 user_id: userData?._id,
                 email: userData?.email,

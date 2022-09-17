@@ -35,7 +35,24 @@ export const validateUser = [
     (req, res, next) => {
         const errors = validationResult(req);
         if (!errors?.isEmpty())
-            return res.status(400).json({ errors: errors?.array()?.map(val => {return { name: val?.param, error: val?.msg }}) });
+            return res.status(400).json({ errors: errors?.array()?.map(val => { return { name: val?.param, error: val?.msg } }) });
+        next();
+    }
+]
+
+export const emailValidator = [
+    check('email')
+        .trim()
+        .normalizeEmail()
+        .isEmail()
+        .not()
+        .isEmpty()
+        .withMessage('Invalid email address!')
+        .bail(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors?.isEmpty())
+            return res.status(400).json({ errors: errors?.array()?.map(val => { return { name: val?.param, error: val?.msg } }) });
         next();
     }
 ]

@@ -1,6 +1,19 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import fs from 'fs'
 
+export const readHTMLFile = function(path, callback) {
+    fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
+        if (err) {
+           callback(err); 
+           throw err;
+            
+        }
+        else {
+            callback(null, html);
+        }
+    });
+};
 
 export const hashPassword = async (value) => {
     const saltRounds = 10;
