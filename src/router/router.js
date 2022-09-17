@@ -10,6 +10,6 @@ const router = Router()
 router.post('/registration', validateUser, createUserRegistration)
 router.post('/login', userLogin)
 router.post('/forgot-password', emailValidator, forgotPassword)
-router.post('/reset-password', passwordValidator, resetPassword)
+router.put('/reset-password', passwordValidator, resetPassword)
 
 export default router
