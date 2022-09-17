@@ -2,6 +2,8 @@ import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
 
+const secret_key = '*@#$%^&*()-_=+'
+
 export const readHTMLFile = function(path, callback) {
     fs.readFile(path, {encoding: 'utf-8'}, function (err, html) {
         if (err) {
@@ -37,7 +39,6 @@ export const comparePassword = async (password, hashPassword) => {
 }
 
 export const generateNewToken = async (payload) => {
-    const secret_key = '*@#$%^&*()-_=+'
     const token = await new Promise((resolve, reject) => {
         jwt.sign(payload, secret_key, (err, data) => {
             if (err) reject(err)
@@ -45,4 +46,9 @@ export const generateNewToken = async (payload) => {
         })
     })
     return token
+}
+
+export const verifyUserToken = async (token) => {
+    const isVerified = await jwt.verify(token, secret_key)
+    return isVerified
 }

@@ -56,3 +56,18 @@ export const emailValidator = [
         next();
     }
 ]
+
+export const passwordValidator = [
+    check('password')
+        .not()
+        .isEmpty()
+        .withMessage('Password cannot be empty')
+        .isLength({ min: 6 })
+        .withMessage('Password must be more that 6 charecters'),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors?.isEmpty())
+            return res.status(400).json({ errors: errors?.array()?.map(val => { return { name: val?.param, error: val?.msg } }) });
+        next();
+    }
+]
