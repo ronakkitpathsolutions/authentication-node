@@ -34,6 +34,7 @@ export const createUserRegistration = async (req, res) => {
             token: await generateNewToken({
                 user_id: userData?._id,
                 email: userData?.email,
+                role: userData?.role,
                 username: userData?.username,
                 contact: userData?.contact
             })

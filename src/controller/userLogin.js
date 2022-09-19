@@ -30,6 +30,7 @@ export const userLogin = async (req, res) => {
             token: await generateNewToken({
                 user_id: findUser?._id,
                 email: findUser?.email,
+                role: findUser?.role,
                 username: findUser?.username,
                 contact: findUser?.contact
             })

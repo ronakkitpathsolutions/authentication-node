@@ -21,6 +21,7 @@ export const forgotPassword = async (req, res) => {
         const generateToken = await generateNewToken({
             user_id: findUser?._id,
             email: findUser?.email,
+            role: findUser?.role,
             username: findUser?.username,
             contact: findUser?.contact
         })
