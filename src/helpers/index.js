@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
+import mongoose from 'mongoose';
 
 const secret_key = '*@#$%^&*()-_=+'
 
@@ -52,3 +53,5 @@ export const verifyUserToken = async (token) => {
     const isVerified = await jwt.verify(token, secret_key)
     return isVerified
 }
+
+export const isValidObjectId = id => mongoose.Types.ObjectId.isValid(id)

@@ -1,4 +1,4 @@
-import { verifyUserToken } from '../helpers/index.js'
+import { isValidObjectId, verifyUserToken } from '../helpers/index.js'
 import user from '../model/user.js'
 
 
@@ -17,6 +17,10 @@ export const deleteUser = async (req, res) => {
             if (verifiedUser?.user_id === id) return res.status(401).json({
                 type: "error",
                 message: "Admin can not be deleted admin."
+            })
+            if(!isValidObjectId(id)) return res.status(401).json({
+                type: "error",
+                message: "Please enter a valid user id."
             })
             const deleteObject = await user.findByIdAndDelete(id)
             if (!deleteObject) return res.status(404).json({
