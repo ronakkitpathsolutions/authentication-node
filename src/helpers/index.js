@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import fs from 'fs'
-import mongoose from 'mongoose';
+import { Types } from 'mongoose';
 
 const secret_key = '*@#$%^&*()-_=+'
 
@@ -39,9 +39,9 @@ export const comparePassword = async (password, hashPassword) => {
     return compared
 }
 
-export const generateNewToken = async (payload) => {
+export const generateNewToken = async (payload, schedule = 60) => {
     const token = await new Promise((resolve, reject) => {
-        jwt.sign(payload, secret_key, (err, data) => {
+        jwt.sign({...payload, exp: Math.floor(Date.now() / 1000) + (schedule * 60)}, secret_key, (err, data) => {
             if (err) reject(err)
             resolve(data)
         })
@@ -54,4 +54,14 @@ export const verifyUserToken = async (token) => {
     return isVerified
 }
 
-export const isValidObjectId = id => mongoose.Types.ObjectId.isValid(id)
+export const isValidObjectId = id => Types.ObjectId.isValid(id)
+
+export const isTokenExpired = async(token) => {
+    const isExpired = await new Promise((resolve, reject) => {
+        jwt.verify(token, secret_key), (err, data) => {
+            if(err) reject(err)
+            resolve(data)
+        }
+    })
+    return isExpired?.exp <= Math.floor(Date.now() / 1000)
+}

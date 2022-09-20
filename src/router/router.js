@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { changePassword } from "../controller/change-password.js";
 import { deleteUser } from "../controller/deleteUser.js";
 import { forgotPassword } from "../controller/forgotPassword.js";
 import { resetPassword } from "../controller/resetPassword.js";
@@ -13,5 +14,6 @@ router.post('/login', userLogin)
 router.post('/forgot-password', emailValidator, forgotPassword)
 router.put('/reset-password', passwordValidator, resetPassword)
 router.delete('/delete-user/:id', deleteUser)
+router.put('/change-password', passwordValidator, changePassword)
 
 export default router
