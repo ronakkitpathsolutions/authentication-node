@@ -12,14 +12,14 @@ export const deleteUser = async (req, res) => {
             message: "No token provided."
         })
 
-        // const isExpiredToken = await isTokenExpired(token)
-        // if(isExpiredToken) return res.status(401).json({
-        //     type: "error",
-        //     message: "Sorry, This token is expired please try again later."
-        // })
+        const isExpiredToken = await isTokenExpired(res, token)
+        if(isExpiredToken) return res.status(401).json({
+            type: "error",
+            message: "Sorry, This token is expired please try again later."
+        })
 
         const verifiedUser = await verifyUserToken(token)
-        console.log('verifiedUser', verifiedUser)
+
         if (verifiedUser?.role === 'admin') {
             if (verifiedUser?.user_id === id) return res.status(401).json({
                 type: "error",

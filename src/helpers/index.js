@@ -50,18 +50,16 @@ export const generateNewToken = async (payload, schedule = 60) => {
 }
 
 export const verifyUserToken = async (token) => {
-    const isVerified = await jwt.verify(token, secret_key)
+    const isVerified = jwt.verify(token, secret_key)
     return isVerified
 }
 
 export const isValidObjectId = id => Types.ObjectId.isValid(id)
 
-export const isTokenExpired = async(token) => {
-    const isExpired = await new Promise((resolve, reject) => {
-        jwt.verify(token, secret_key), (err, data) => {
-            if(err) reject(err)
-            resolve(data)
-        }
-    })
-    return isExpired?.exp <= Math.floor(Date.now() / 1000)
+export const isTokenExpired = async(res, token) => {
+    try {
+        const isExpired = jwt.verify(token, secret_key)
+        if(!isExpired) return true
+        return isExpired?.exp <= Math.floor(Date.now() / 1000)
+    } catch (error) {return true}
 }

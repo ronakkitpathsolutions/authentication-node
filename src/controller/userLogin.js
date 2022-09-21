@@ -21,7 +21,7 @@ export const userLogin = async (req, res) => {
 
         if (!isAuthenticated) return res.status(401).json({
             type: "error",
-            message: "unauthorized user."
+            message: "Invalid username or password."
         })
 
         return res.status(200).json({
