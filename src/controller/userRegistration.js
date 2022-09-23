@@ -1,4 +1,4 @@
-import { generateNewToken, hashPassword } from "../helpers/index.js"
+import { allFieldsRequired, generateNewToken, hashPassword } from "../helpers/index.js"
 import user from "../model/user.js"
 
 
@@ -6,13 +6,12 @@ import user from "../model/user.js"
 export const createUserRegistration = async (req, res) => {
     const { username, email, contact, password, confirm_password } = req.body
     try {
+        const isAllFieldRequired = allFieldsRequired([username, email, contact, password, confirm_password])
+        if (isAllFieldRequired) return res.status(400).json({
+            type: "error",
+            message: "All fields are required."
+        })
 
-        if (!username || !email || !contact || !password || !confirm_password) {
-            return res.status(400).json({
-                type: "error",
-                message: "All fields are required."
-            })
-        }
         if (password !== confirm_password) return res.status(400).json({
             type: "error",
             message: "password and confirm password does not matched."

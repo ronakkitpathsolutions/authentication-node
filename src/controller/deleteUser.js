@@ -1,4 +1,4 @@
-import { isTokenExpired, isValidObjectId, verifyUserToken } from '../helpers/index.js'
+import { handleAdminAccess, isTokenExpired, isValidObjectId, verifyUserToken } from '../helpers/index.js'
 import user from '../model/user.js'
 
 
@@ -15,16 +15,12 @@ export const deleteUser = async (req, res) => {
         const isExpiredToken = await isTokenExpired(res, token)
         if(isExpiredToken) return res.status(401).json({
             type: "error",
-            message: "Sorry, This token is expired please try again later."
+            message: "Invalid token, please try again later."
         })
 
-        const verifiedUser = await verifyUserToken(token)
+        const isAdmin = await handleAdminAccess(token)
 
-        if (verifiedUser?.role === 'admin') {
-            if (verifiedUser?.user_id === id) return res.status(401).json({
-                type: "error",
-                message: "You are not able to delete this user."
-            })
+        if (isAdmin) {
             if(!isValidObjectId(id)) return res.status(401).json({
                 type: "error",
                 message: "Please enter a valid user id."

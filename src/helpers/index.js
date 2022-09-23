@@ -18,6 +18,15 @@ export const readHTMLFile = function (path, callback) {
     });
 };
 
+export const allFieldsRequired = (data) => {
+    const cloneData = [...data]
+    let validatorArray = []
+    cloneData?.forEach(value => {
+        validatorArray?.push(!value)
+    });
+    return validatorArray?.some(data => !!data)
+}
+
 export const hashPassword = async (value) => {
     const saltRounds = 10;
     const hashedPassword = await new Promise((resolve, reject) => {
@@ -52,6 +61,11 @@ export const generateNewToken = async (payload, schedule = 60) => {
 export const verifyUserToken = async (token) => {
     const isVerified = jwt.verify(token, secret_key)
     return isVerified
+}
+
+export const handleAdminAccess = async(token) => {
+    const isAdminAuthorized = await verifyUserToken(token)
+    return isAdminAuthorized?.role === "admin"
 }
 
 export const isValidObjectId = id => Types.ObjectId.isValid(id)

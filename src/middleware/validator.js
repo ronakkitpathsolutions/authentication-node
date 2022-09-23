@@ -71,3 +71,42 @@ export const passwordValidator = [
         next();
     }
 ]
+
+export const validateProducts = [
+    check('product_name')
+        .trim()
+        .escape()
+        .not()
+        .isEmpty()
+        .withMessage('Product name can not be empty!')
+        .bail()
+        .isLength({ min: 4 })
+        .withMessage('Minimum 4 characters required!')
+        .bail(),
+    check('product_description')
+        .trim()
+        .escape()
+        .not()
+        .isEmpty()
+        .withMessage('Product description can not be empty!')
+        .bail()
+        .isLength({ min: 100 })
+        .withMessage('Minimum 100 characters required!')
+        .bail(),
+    check('category')
+        .trim()
+        .escape()
+        .not()
+        .isEmpty()
+        .withMessage('Category can not be empty!')
+        .bail()
+        .isLength({ min: 3 })
+        .withMessage('Minimum 3 characters required!')
+        .bail(),
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors?.isEmpty())
+            return res.status(400).json({ errors: errors?.array()?.map(val => { return { name: val?.param, error: val?.msg } }) });
+        next();
+    }
+]

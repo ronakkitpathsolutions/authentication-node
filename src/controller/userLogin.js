@@ -1,17 +1,16 @@
-import { comparePassword, generateNewToken } from "../helpers/index.js"
+import { allFieldsRequired, comparePassword, generateNewToken } from "../helpers/index.js"
 import user from "../model/user.js"
 
 export const userLogin = async (req, res) => {
     const { email, password } = req.body
     try {
-
-        if (!email || !password) return res.status(400).json({
+        const isAllFieldRequired = allFieldsRequired([email, password])
+        if (isAllFieldRequired) return res.status(400).json({
             type: "error",
             message: "All fields are required."
         })
 
         const findUser = await user.findOne({ email })
-
         if (!findUser) return res.status(400).json({
             type: "error",
             message: "user not found this email address."
@@ -33,7 +32,7 @@ export const userLogin = async (req, res) => {
                 role: findUser?.role,
                 username: findUser?.username,
                 contact: findUser?.contact
-            })
+            }, 10)
         })
 
 

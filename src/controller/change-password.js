@@ -1,4 +1,4 @@
-import { comparePassword, generateNewToken, hashPassword, verifyUserToken } from "../helpers/index.js"
+import { allFieldsRequired, comparePassword, generateNewToken, hashPassword, verifyUserToken } from "../helpers/index.js"
 import user from "../model/user.js"
 
 
@@ -12,10 +12,13 @@ export const changePassword = async(req, res) => {
             type: "error",
             message: "No token provided."
         })
-        if(!old_password || !password || !confirm_password) return res.status(400).json({
+
+        const isAllFieldRequired = allFieldsRequired([old_password, password, confirm_password])
+        if (isAllFieldRequired) return res.status(400).json({
             type: "error",
             message: "All fields are required."
         })
+        
         if(password !== confirm_password) return res.status(400).json({
             type: "error",
             message: "New password and Confirm password does not matched."
