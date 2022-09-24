@@ -10,13 +10,13 @@ const productSchema = new Schema({
         required: true,
         trim: true
     },
-    product_image: {
+    product_image:{
         type: String,
         required: false,
         default: null,
         trim: true
     },
-    product_description: {
+    product_description:{
         type: String,
         required: true,
         minlength: 100,
@@ -27,7 +27,7 @@ const productSchema = new Schema({
         required: true,
         trim: true
     },
-    colours: [
+    colors: [
         {
             type: String,
             required: true,
