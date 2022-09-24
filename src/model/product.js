@@ -27,7 +27,7 @@ const productSchema = new Schema({
         required: true,
         trim: true
     },
-    colours: [
+    colors: [
         {
             type: String,
             required: true,
